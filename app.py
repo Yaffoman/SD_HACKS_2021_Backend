@@ -1,9 +1,8 @@
-# flask and other web required frameworks
-from flask import Flask, jsonify, request, render_template
-from flask_cors import CORS
-import json
-from random import randint
 import pyrebase
+from flask import *
+import sys
+import random
+app = Flask(__name__)
 
 config = {
     "apiKey": "AIzaSyAn8HjyDpn4dZW5-kPQh9DfqiHeTTt7rE4",
@@ -17,38 +16,72 @@ config = {
 };
 
 firebase = pyrebase.initialize_app(config)
+
 auth = firebase.auth()
 
+@app.route("/login_success")
+def login_redirected():
+    return "You are now logged in"
+
+@app.route("/signup_success")
+def signup_redirected():
+    return "Successfully signed up"
 
 
-app = Flask(__name__)
-CORS(app)
-# # #
-# # # # ROUTES
-# # # # # # # # #
-
-@app.route("/")
-def hello():
-    return "Hello World!"
-
-@app.route("/login", methods=['GET', 'POST'])
+@app.route('/', methods=['GET', 'POST'])
 def login():
-	unsuccessful = 'Please check your credentials'
-	successful = 'Login successful'
-	if request.method == 'POST':
-		email = request.form['name']
-		password = request.form['pass']
-		try:
-			auth.sign_in_with_email_and_password(email, password)
-			return render_template('login.html', s=successful)
-		except:
-			return render_template('login.html', us=unsuccessful)
+    unsuccessful = 'Please check your credentials'
+    successful = 'Login successful'
+    print(request.method)
+    if request.method == 'POST':
+        email = request.form['name']
+        password = request.form['pass']
+        try:
+            auth.sign_in_with_email_and_password(email, password)
+            #return render_template('new.html', s=successful)
+            return redirect('/login_success')
+            print("redirecting now")
+        except:
+            return render_template('new.html', us=unsuccessful)
 
-	return render_template('login.html')
+    return render_template('new.html')
 
-@app.route("/signup")
+@app.route('/signup', methods=['GET', 'POST'])
 def signup():
-    return "Under development"
+    email = 'test_email{}@gmail.com'.format(random.randrange(0,100))
+    password = 'somepassword12345' 
+    print("email: ",email, file=sys.stderr)
+    auth.create_user_with_email_and_password(email, password)
+    return redirect('/signup_success')
 
-if __name__ == "__main__":
-    app.run(host='127.0.0.1', port=5000, debug=True)
+
+if __name__ == '__main__':
+    app.run()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
