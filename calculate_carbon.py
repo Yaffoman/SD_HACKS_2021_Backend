@@ -16,10 +16,18 @@ IMPORTANT ASSUMPTION: every measurement is monthly
     3.2) 3-6 per year (moderate) 
     3.3) 1 flight per month (high)
 
+
 4) Cruise
     4.1) 1 cruise a year
     4.2) 2 or more cruise a year
-        
+  
+
+5) bus
+
+6) train
+
+7) Food types: 
+
 Useful links: https://www.carbonfootprint.com/calculator.aspx 
 
 """
@@ -30,12 +38,38 @@ electricity_rate = 13 #cents/kWh
 total_carbon_kgs = 0
 
 
+# "heavy_meat"  = $100 spent/month = 730kgCO2/month 
+#               = $1   spent/month = 7.3kgCO2/month
+
+# "medium_meat" = $100 spent/month = 570kgCO2/month
+#               = $1   spent/month = 5.3kgCO2/month
+
+# "low_meat"    = $100 spent/month = 470kgCO2/month
+#               = $1   spent/month = 4.7kgCO2/month
+
+# "pescatarian" = $100 spent/month = 400kgCO2/month
+#               = $1   spent/month = 4.0kgCO2/month
+
+# "vegetarian"  = $100 spent/month = 390kgCO2/month
+#               = $1   spent/month = 3.9kgCO2/month
+
+# "vegan"       = $100 spent/month = 290kgCO2/month
+#               = $1   spent/month = 2.9kgCO2/month 
 class Person:
-    def __init__(self, name:str): 
+    def __init__(self, name:str, food_choice:str): 
         self.name = name
         self.kg_carbon_footprint = 0
         #household
         self.kWh_factor = 0.4532 
+        self.food_choice = food_choice
+        self.food_dict= {
+                            "heavy_meat"  : 7.3,
+                            "medium_meat" : 5.3,
+                            "low_meat"    : 4.7,
+                            "pescatarian" : 4.0,
+                            "vegetarian"  : 3.9,
+                            "vegan"       : 2.9
+                        }
 
     def add_house(self, occupants: int, electricity_bill: float): #electricity bill is in dollars
         kWh_used = electricity_bill/0.13  #reasoning: avg cost of 1 kWh in america = 12.87 cents
@@ -53,16 +87,31 @@ class Person:
 
     def add_motorbike(self, miles:int):
         km_driven = miles * 1.6
-        self.kg_carbon_footprint += km_driven * 0.077 
+        CO2_permile = 0.077
+        self.kg_carbon_footprint += km_driven * CO2_permile 
+
+    def add_bus(self, miles: int): 
+        km_dirven = miles * 1.6
+        CO2_permile = 0.053 #kg
+        self.kg_carbon_footprint += miles * CO2_permile
+
+    def add_train(self, miles: int):
+        CO2_permile = 0.148
+        self.kg_carbon_footprint += miles *CO2_permile
+
+    def add_food(self, monthly_money_spent: int):
+        self.kg_carbon_footprint += self.food_dict[self.food_choice] * monthly_money_spent 
 
     def print_footprint(self):
         print("carbon footprint:", '%.2f'%self.kg_carbon_footprint, "kgCO2 emission/month")
 
 if __name__ == '__main__':
 
-    abhi = Person("abhi") 
-    abhi.add_house(1, 120) #abhi spent $120 on electricity
-    abhi.add_flight(2)     #abhi took 2 round trip flights in a month 
+    abhi = Person("abhi", "low_meat") 
+    abhi.add_house(1, 120)    #abhi spent $120 on electricity
+    abhi.add_flight(2)        #abhi took 2 round trip flights in a month 
     abhi.add_car(5000, False) #abhi drove 5000 miles without carpooling
-    abhi.add_motorbike(5000)
+    abhi.add_motorbike(5000)  #abhi drove 5000 miles on a motorbike
+    abhi.add_food(400)        #abhi spent 400 dollars on food/month
     abhi.print_footprint()
+
