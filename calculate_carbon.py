@@ -97,7 +97,11 @@ class Person:
 
     def add_train(self, miles: int):
         CO2_permile = 0.148
-        self.kg_carbon_footprint += miles *CO2_permile
+        self.kg_carbon_footprint += miles * CO2_permile
+
+    def add_subway(self, miles: int): 
+        CO2_permile = 0.099
+        self.kg_carbon_footprint += miles * CO2_permile
 
     def add_food(self, monthly_money_spent: int):
         self.kg_carbon_footprint += self.food_dict[self.food_choice] * monthly_money_spent 
@@ -113,5 +117,6 @@ if __name__ == '__main__':
     abhi.add_car(5000, False) #abhi drove 5000 miles without carpooling
     abhi.add_motorbike(5000)  #abhi drove 5000 miles on a motorbike
     abhi.add_food(400)        #abhi spent 400 dollars on food/month
+    abhi.add_subway(100)
     abhi.print_footprint()
 
