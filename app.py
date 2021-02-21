@@ -55,13 +55,17 @@ def create_user(data):
     smart_tips(user)
     return user
 
+@app.route('/get_dummy_user_emission',methods=['GET'])
+def dummy_emission_breakdown():
+    pass
 
 
 @app.route('/user_emission',methods=['GET'])
 def emission_breakdown():
     global user
-    user_data = {"carbon_footprint": user.kg_carbon_footprint,
-                "house_emission": user.house_emissions,
+    user_data = {
+                 "carbon_footprint": user.kg_carbon_footprint,
+                 "house_emission": user.house_emissions,
                  "flight_emissions": user.flight_emissions,
                  "car_emissions": user.car_emissions,
                  "motorbike_emissions": user.motorbike_emissions,
