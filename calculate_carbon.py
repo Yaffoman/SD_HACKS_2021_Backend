@@ -1,5 +1,17 @@
 #calculate_carbon.py
 
+import firebase_admin
+from firebase_admin import credentials
+from firebase_admin import firestore
+
+# Use the application default credentials
+cred = credentials.ApplicationDefault()
+firebase_admin.initialize_app(cred, {
+  'projectId': 'high-cistern-230306',
+})
+
+db = firestore.client()
+
 """
 IMPORTANT ASSUMPTION: every measurement is monthly 
 0) House electricity
@@ -62,6 +74,9 @@ class Person:
         self.train_emissions = 0
         self.subway_emissions = 0
         self.food_emissions = 0
+        self.electricity_tips = []
+        self.car_tips = []
+        self.food_tips = []
 
     def add_house(self, occupants: int, electricity_bill: float): #electricity bill is in dollars
         kWh_used = electricity_bill/0.13  #reasoning: avg cost of 1 kWh in america = 12.87 cents
@@ -113,7 +128,15 @@ class Person:
         "\ncar emissions: ", self.car_emissions, "\nmotorbike emissions: ", self.motorbike_emissions,
         "\nbus emissions: ", self.bus_emissions, "\ntrain emissions: ", self.train_emissions,
         "\nsubway emissions: ", self.subway_emissions, "\nfood emissions: ", self.food_emissions)
+    
+    def print_tips(self):
+        print("electricity tips: ", self.electricity_tips)
+        print()
+        print("car_tips: ", self.car_tips)
+        print()
+        print("food_tips:", self.food_tips)
 
+    
 def smart_tips(person: Person):
     #global electricity_tips
     electricity_tips = []
@@ -128,8 +151,8 @@ def smart_tips(person: Person):
         electricity_tips.append("Use natural light: A single south-facing window can illuminate 20 to 100 times its area. Turning off one 60-watt bulb for four hours a day is a $9 saving over a year.") 
         electricity_tips.append("Manage your thermostat: If you have electric heat, lower your thermostat by two degrees to save 5% on your heating bill. Lowering it five degrees could save 10%.")
         electricity_tips.append("Be strategic with window coverings: Promote airflow through your home and block the afternoon sun. You could save you up to $10 (2 fans) or $45 (1 window unit AC) during the summer.")
-        print()
-        print("electricity tips: ", electricity_tips)
+        person.electricity_tips = electricity_tips
+
     if person.car_emissions > 383: 
         more_than_avg = person.car_emissions - 383
         percentage_above_avg = (more_than_avg/383) * 100
@@ -137,8 +160,7 @@ def smart_tips(person: Person):
         car_tips.append("Drive less: Walk or bike when you can, take public transit when possible, use ride-sharing services, or work from home periodically if your job allows it.")
         car_tips.append("Drive effciently: Go easy on the gas pedal and brakes")
         car_tips.append("Maintain your car: Get regular tune-ups, check tyre pressure frequently, follow the manufacturer’s maintenance schedule, and use the recommended motor oil.")
-        print()
-        print("car_tips: ", car_tips)
+        person.car_tips = car_tips
 
     if person.food_emissions  > 2000:
         more_than_avg = person.food_emissions - 2000
@@ -147,8 +169,7 @@ def smart_tips(person: Person):
         food_tips.append("Do not waste food: Throwing away 3kg of edible food results in greenhouse gases equivalent to 23kg of carbon dioxide being emitted into the atmosphere.")
         food_tips.append("Diversify your protien sources: The carbon footprint of beef is four times higher than port and poultry.")
         food_tips.append("Compost: Putting any scraps or unusable leftovers into compost can reduce the amount of methane released into the atmosphere.")
-        print()
-        print("food_tips:", food_tips)
+        person.food_tips = food_tips
         
 if __name__ == '__main__':
     global tips
@@ -164,3 +185,4 @@ if __name__ == '__main__':
     abhi.print_footprint()
     abhi.print_report()
     smart_tips(abhi)
+    abhi.print_tips()
