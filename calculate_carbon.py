@@ -123,24 +123,27 @@ def smart_tips(person: Person):
     if person.house_emissions > 400: 
         more_than_avg = person.house_emissions - 400
         percentage_above_avg = (more_than_avg / 400)*100
-        electricity_tips.append("You are generating {}% more CO2 than an average household".format(round(percentage_above_avg,2)))
+        electricity_tips.append("You are generating {}% more carbon dioxide than an average household".format(round(percentage_above_avg,2)))
         electricity_tips.append("Unplug unused electronics: Standby power can account for 10% of an average household's annual electricity use")  
         electricity_tips.append("Use natural light: A single south-facing window can illuminate 20 to 100 times its area. Turning off one 60-watt bulb for four hours a day is a $9 saving over a year.") 
         electricity_tips.append("Manage your thermostat: If you have electric heat, lower your thermostat by two degrees to save 5% on your heating bill. Lowering it five degrees could save 10%.")
         electricity_tips.append("Be strategic with window coverings: Promote airflow through your home and block the afternoon sun. You could save you up to $10 (2 fans) or $45 (1 window unit AC) during the summer.")
+        print()
+        print("electricity tips: ", electricity_tips)
     if person.car_emissions > 383: 
         more_than_avg = person.car_emissions - 383
         percentage_above_avg = (more_than_avg/383) * 100
-        car_tips.append("You are generating {}% more CO2 than an average emissions of a typical passenger vehicle".format(round(percentage_above_avg,2)))
+        car_tips.append("You are generating {}% more carbon dioxide than an average emissions of a typical passenger vehicle".format(round(percentage_above_avg,2)))
         car_tips.append("Drive less: Walk or bike when you can, take public transit when possible, use ride-sharing services, or work from home periodically if your job allows it.")
         car_tips.append("Drive effciently: Go easy on the gas pedal and brakes")
         car_tips.append("Maintain your car: Get regular tune-ups, check tyre pressure frequently, follow the manufacturer’s maintenance schedule, and use the recommended motor oil.")
+        print()
         print("car_tips: ", car_tips)
 
     if person.food_emissions  > 2000:
         more_than_avg = person.food_emissions - 2000
         percentage_above_avg = (more_than_avg/2000) *100
-        food_tips.append("Your food consumption is generating {}% more carbond dioxide than the average".format(round(percentage_above_avg,2)))
+        food_tips.append("Your food consumption is generating {}% more carbon dioxide than the average".format(round(percentage_above_avg,2)))
         food_tips.append("Do not waste food: Throwing away 3kg of edible food results in greenhouse gases equivalent to 23kg of carbon dioxide being emitted into the atmosphere.")
         food_tips.append("Diversify your protien sources: The carbon footprint of beef is four times higher than port and poultry.")
         food_tips.append("Compost: Putting any scraps or unusable leftovers into compost can reduce the amount of methane released into the atmosphere.")
