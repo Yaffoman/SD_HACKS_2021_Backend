@@ -1,5 +1,4 @@
 #calculate_carbon.py
-
 import firebase_admin
 from firebase_admin import credentials
 from firebase_admin import firestore
@@ -61,7 +60,7 @@ class Person:
         self.food_dict= {
                             "heavy_meat"  : 7.3,
                             "medium_meat" : 5.3,
-                            "low_meat"    : 4.7,
+                            "light_meat"    : 4.7,
                             "pescatarian" : 4.0,
                             "vegetarian"  : 3.9,
                             "vegan"       : 2.9
@@ -79,13 +78,15 @@ class Person:
         self.food_tips = []
 
     def add_house(self, occupants: int, electricity_bill: float): #electricity bill is in dollars
+        if occupants == 0: occupants = 1
         kWh_used = electricity_bill/0.13  #reasoning: avg cost of 1 kWh in america = 12.87 cents
         self.house_emissions +=  (kWh_used * self.kWh_factor) / occupants
         self.kg_carbon_footprint += (kWh_used * self.kWh_factor) / occupants
 
     def add_flight(self, num_of_round_trips:int):
-        self.flight_emissions += num_of_round_trips * 1000 #assumption: 13 hour of flight time 
-        self.kg_carbon_footprint += num_of_round_trips * 1000 
+        print(type(num_of_round_trips))
+        self.flight_emissions += (num_of_round_trips * 1000) / 12    #assumption: 13 hour of flight time 
+        self.kg_carbon_footprint += (num_of_round_trips * 1000) / 12 
         
     def add_car(self, miles:int, carpool: bool):
         #avg passenger vehicle emits 423g of CO2/mile
