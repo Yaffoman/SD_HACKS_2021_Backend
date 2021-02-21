@@ -55,10 +55,120 @@ def create_user(data):
     smart_tips(user)
     return user
 
+@app.route('/get_dummy_users_ranked', methods= ['GET'])
+def dummy_users_ranked():
+    global dum1
+    global dum2
+    global dum3
+    global dum4
+    global dum5
+
+    tuple_list = [(dum1.name, dum1.kg_carbon_footprint),
+                  (dum2.name, dum2.kg_carbon_footprint),
+                  (dum3.name, dum3.kg_carbon_footprint), 
+                  (dum4.name, dum4.kg_carbon_footprint),
+                  (dum5.name, dum5.kg_carbon_footprint),  
+                  ]
+    
+    tuple_list.sort(key=lambda tup: tup[1])
+    response = jsonify(tuple_list) 
+    return response
+
+
 @app.route('/get_dummy_user_emission',methods=['GET'])
 def dummy_emission_breakdown():
-    pass
+    global dum1
+    global dum2
+    global dum3
+    global dum4
+    global dum5
 
+    dum1 = {
+                 "carbon_footprint": dum1.kg_carbon_footprint,
+                 "house_emission": dum1.house_emissions,
+                 "flight_emissions": dum1.flight_emissions,
+                 "car_emissions": dum1.car_emissions,
+                 "motorbike_emissions": dum1.motorbike_emissions,
+                 "bus_emissions": dum1.bus_emissions,
+                 "train_emissions": dum1.train_emissions,
+                 "subway_emissions": dum1.subway_emissions,
+                 "food_emissions": dum1.food_emissions,
+                 "electricity_tips": dum1.electricity_tips,
+                 "car_tips": dum1.car_tips,
+                 "food_tips": dum1.food_tips
+                 }
+
+    dum2 = {
+                 "carbon_footprint": dum2.kg_carbon_footprint,
+                 "house_emission": dum2.house_emissions,
+                 "flight_emissions": dum2.flight_emissions,
+                 "car_emissions": dum2.car_emissions,
+                 "motorbike_emissions": dum2.motorbike_emissions,
+                 "bus_emissions": dum2.bus_emissions,
+                 "train_emissions": dum2.train_emissions,
+                 "subway_emissions": dum2.subway_emissions,
+                 "food_emissions": dum2.food_emissions,
+                 "electricity_tips": dum2.electricity_tips,
+                 "car_tips": dum2.car_tips,
+                 "food_tips": dum2.food_tips
+                 }
+
+    dum3 = {
+                 "carbon_footprint": dum3.kg_carbon_footprint,
+                 "house_emission": dum3.house_emissions,
+                 "flight_emissions": dum3.flight_emissions,
+                 "car_emissions": dum3.car_emissions,
+                 "motorbike_emissions": dum3.motorbike_emissions,
+                 "bus_emissions": dum3.bus_emissions,
+                 "train_emissions": dum3.train_emissions,
+                 "subway_emissions": dum3.subway_emissions,
+                 "food_emissions": dum3.food_emissions,
+                 "electricity_tips": dum3.electricity_tips,
+                 "car_tips": dum3.car_tips,
+                 "food_tips": dum3.food_tips
+                 }
+
+    dum4 = {
+                 "carbon_footprint": dum4.kg_carbon_footprint,
+                 "house_emission": dum4.house_emissions,
+                 "flight_emissions": dum4.flight_emissions,
+                 "car_emissions": dum4.car_emissions,
+                 "motorbike_emissions": dum4.motorbike_emissions,
+                 "bus_emissions": dum4.bus_emissions,
+                 "train_emissions": dum4.train_emissions,
+                 "subway_emissions": dum4.subway_emissions,
+                 "food_emissions": dum4.food_emissions,
+                 "electricity_tips": dum4.electricity_tips,
+                 "car_tips": dum4.car_tips,
+                 "food_tips": dum4.food_tips
+                 }
+
+
+    dum5 = {
+                 "carbon_footprint": dum5.kg_carbon_footprint,
+                 "house_emission": dum5.house_emissions,
+                 "flight_emissions": dum5.flight_emissions,
+                 "car_emissions": dum5.car_emissions,
+                 "motorbike_emissions": dum5.motorbike_emissions,
+                 "bus_emissions": dum5.bus_emissions,
+                 "train_emissions": dum5.train_emissions,
+                 "subway_emissions": dum5.subway_emissions,
+                 "food_emissions": dum5.food_emissions,
+                 "electricity_tips": dum5.electricity_tips,
+                 "car_tips": dum5.car_tips,
+                 "food_tips": dum5.food_tips
+                 }
+
+    dummy_data = {
+                "dum1": dum1,
+                "dum2": dum2,
+                "dum3": dum3,
+                "dum4": dum4,
+                "dum5": dum5
+    }
+
+    response = jsonify(dummy_data)
+    return response
 
 @app.route('/user_emission',methods=['GET'])
 def emission_breakdown():
@@ -99,16 +209,21 @@ def login():
 #@flask_cors.cross_origin(origins="**")
 def signup():
     global user
-    dum = create_dummy_data('jason', 'light_meat', True) 
-    dum1 = create_dummy_data('walter', 'heavy_meat', False) 
-    dum2 = create_dummy_data('nathan', 'vegan', True) 
-    dum3 = create_dummy_data('kaler', 'pescatarian', False) 
-    dum4 = create_dummy_data('tiffani', 'vegetarian', False) 
-    dum.print_footprint()
+    global dum1
+    global dum2
+    global dum3
+    global dum4
+    global dum5
+    dum1 = create_dummy_data('jason', 'light_meat', True) 
+    dum2 = create_dummy_data('walter', 'heavy_meat', False) 
+    dum3 = create_dummy_data('nathan', 'vegan', True) 
+    dum4 = create_dummy_data('kaler', 'pescatarian', False) 
+    dum5 = create_dummy_data('tiffani', 'vegetarian', False) 
     dum1.print_footprint()
     dum2.print_footprint()
     dum3.print_footprint()
     dum4.print_footprint()
+    dum5.print_footprint()
 
     print(request.method)
     if request.method == 'POST':
